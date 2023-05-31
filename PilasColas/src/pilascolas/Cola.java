@@ -66,7 +66,7 @@ public class Cola {
         return p;
     }
 
-    void pasarDato(Cola c1) {
+    public void pasarDato(Cola c1) {
         while (!c1.ColaVacia()) {
             Encolar(c1.Desencolar());
         }
@@ -96,7 +96,6 @@ public class Cola {
                     x.Encolar(d);
                     a = !a;
                 }
-
             }
             this.pasarDato(x);
         }
@@ -109,7 +108,7 @@ public class Cola {
         Cola aux = new Cola();
         while (p != null) {
             p = this.Desencolar();
-            s = s + "[" + p.getDato() + "]" + " ";
+            s = s + "[" + p.getDato() + "] ";
             aux.Encolar(p);
             p = punta;
         }
@@ -117,28 +116,72 @@ public class Cola {
         JOptionPane.showMessageDialog(null, s);
     }
 
-    public void Ordenado() {
+    public void Ordenado(boolean ba) {
         int aux = 0;
         for (int i = 0; i <= this.tope; i++) {
             Cola x = new Cola();
             aux = Desencolar().getDato();
             while (!this.ColaVacia()) {
-                if (aux < this.punta.getDato()) {
+                if (ba && aux < this.punta.getDato() || !ba && aux > this.punta.getDato()) {
                     x.Encolar(aux);
                     aux = this.Desencolar().getDato();
-
-                } else if (aux > this.punta.getDato()) {
+                } else if (aux > this.punta.getDato() || aux < this.punta.getDato()) {
                     x.Encolar(Desencolar());
                 } else {
                     x.Encolar(aux);
                     aux = Desencolar().getDato();
-
                 }
-
             }
             x.Encolar(aux);
             this.pasarDato(x);
         }
+    }
+
+    public void menuColas(){
+        int menu = 0;
+        Cola c1 = this;
+        int d = 0;
+        do {
+            menu = Integer.parseInt(JOptionPane.showInputDialog("Desea trabajar con: \n"
+                    + "1) Encolar\n"
+                    + "2) Desencolar\n"
+                    + "3) Encolar Ordenado\n"
+                    + "4) Ordenar\n"
+                    + "5) Mostrar\n"
+                    + "0) Salir\n\n\n"
+                    + "Ingresa una Opcion: "));
+        
+            switch (menu) {
+            case 1:
+                d = Integer.parseInt(JOptionPane.showInputDialog("Ingrese un numero"));
+                c1.Encolar(d);
+                break;
+
+            case 2:
+                c1.Desencolar();
+                break;
+
+            case 3:
+                d = Integer.parseInt(JOptionPane.showInputDialog("Ingrese un numero"));
+                c1.EncolarOrdenado(d);
+                break;
+            case 4:
+             d = Integer.parseInt(JOptionPane.showInputDialog("¿De manera?"
+             +"\n1)Ascendente"
+             +"\n2)Descendente"));
+             Boolean ord = (d==1)?true:false;
+                c1.Ordenado(ord);
+                break;
+
+            case 5:
+                c1.MostrarCola();
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "Opcion incorrecta");
+                break;
+
+        }
+    }while(menu != 0); 
     }
 
 }

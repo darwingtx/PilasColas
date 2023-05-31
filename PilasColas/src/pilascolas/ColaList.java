@@ -1,5 +1,5 @@
 
-package estudiantesnotas;
+package pilascolas;
 
 import javax.swing.JOptionPane;
 
@@ -30,7 +30,7 @@ public class ColaList{
         NodoCola x = new NodoCola(mater);       
         for(int i=1; i<=4; i++){
             float nota = Float.parseFloat(JOptionPane.showInputDialog("Ingrese la nota " + i + ": "));
-            x.getNotas().Push(nota);
+            x.getNotas().Apilar(nota);
         }
         NodoCola p = punta;
         if (punta == null) {
@@ -64,11 +64,11 @@ public class ColaList{
         NodoCola p = punta;
         punta = punta.getLiga();
         p.setLiga(null);
-        // size--;
+        tope--;
         return p;
     }
 
-    void pasarDato(ColaList c1){
+    public void pasarDato(ColaList c1){
         while (!c1.ColaVacia()) {
             Encolar(c1.Desencolar());
         }
@@ -80,12 +80,12 @@ public class ColaList{
        ColaList aux = new ColaList();
        while(p!=null){
         p = this.Desencolar();
-        s = s + "Materia: " + p.getMat() + "\n" + "Nota Final: " + p.getNotas().Promedio() +  "\n\n";
+        s = s + "Materia: " + p.getMat() + "\n" + "Nota Final: " + String.format("%.02f",p.getNotas().Promedio()) +  "\n";
         aux.Encolar(p);
         p = punta;
        }
        this.pasarDato(aux);
-       s = s + "\n" + "------------------------------------\n";
+       s = s + "------------------------------------\n";
        return s;
     }
     }

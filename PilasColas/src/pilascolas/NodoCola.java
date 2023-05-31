@@ -1,5 +1,7 @@
 
-package estudiantesnotas;
+package pilascolas;
+
+
 
 /**
  *
@@ -9,11 +11,11 @@ public class NodoCola {
 
     //Atributos
     private String mat;
-    private Pila notas;
+    private PilaNotas notas;
     private NodoCola Liga;
 
     public NodoCola(String mat) {
-        notas = new Pila(4);
+        notas = new PilaNotas(4);
         this.mat = mat;
         Liga = null;
     }
@@ -26,14 +28,8 @@ public class NodoCola {
     public void setMat(String mat) {
         this.mat = mat;
     }
-/*
-    public float getNotas() {
-        float x = notas.Promedio();
-        return x;
-    }
-*/
 
-    public Pila getNotas() {
+    public PilaNotas getNotas() {
         return notas;
     }
 
@@ -47,7 +43,7 @@ public class NodoCola {
     
 
     public void setNotas(float d) {
-        notas.Push(d);
+        notas.Apilar(d);
     }
 
 }
