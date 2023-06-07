@@ -4,10 +4,11 @@ import javax.swing.JOptionPane;
 
 public class Pila {
 
-    private int Tope;
+    private int Tope, limite;
     private Nodo punta;
 
     public Pila() {
+        this.limite = 0;
         this.Tope = 0;
         this.punta = null;
     }
@@ -52,7 +53,6 @@ public class Pila {
     }
 
     private void MostrarPila() {
-
         int d;
         String s = "";
         Pila P2 = new Pila();
@@ -66,48 +66,61 @@ public class Pila {
 
     }
 
-    public void PushOrdenado(int d) {
-        boolean a = true;
-        Pila p1 = new Pila();
-        if (PilaVacia() || punta.getDato() < d) {
-            Push(d);
-        } else if (punta.getDato() > d) {
-            do {
-                if (PilaVacia() || punta.getDato() < d) {
-                    Push(d);
-                    a = false;
-                } else if (punta.getDato() > d & a) {
-                    p1.Push(Pop());
-                } else {
-                    Push(p1.Pop());
-                }
-            } while (!p1.PilaVacia());
-        }
-
+    public void PushOrdenado(int d, boolean ord) {
+    boolean a = true;
+    Pila p1 = new Pila();
+    if (PilaVacia()) {
+        Push(d);
+        return;
     }
+
+    boolean insertado = false;
+
+    while (!PilaVacia()) {
+        int elementoActual = Pop().getDato();
+
+        if ((elementoActual < d && !ord) || (elementoActual > d && ord)) {
+            p1.Push(elementoActual);
+        } else {
+            Push(elementoActual);
+            Push(d);
+            insertado = true;
+            break;
+        }
+    }
+    this.pasarDato(p1);
+    if (!insertado) {
+        Push(d);
+    }
+    
+}
+
 
     public void Ordenar(boolean ord) {
         Pila P1 = new Pila();
         Pila P2 = new Pila();
-        Nodo aux = null;
-        P1.pasarDato(this);
-        aux = P1.Pop();
-        while (!P1.PilaVacia() || !P2.PilaVacia()) {
-            if (!P1.PilaVacia()) {
-                if ((aux.getDato() >= P1.punta.getDato() && ord) || (aux.getDato() <= P1.punta.getDato() && !ord)) {
-                    P2.Push(aux);
-                    aux = P1.Pop();
-                } else {
-                    P2.Push(P1.Pop());
+        if(this.Tope != 1){
+            Nodo aux = null;
+            P1.pasarDato(this);
+            aux = P1.Pop();
+
+            while (!P1.PilaVacia() || !P2.PilaVacia()) {
+                if (!P1.PilaVacia()) {
+                    if ((aux.getDato() >= P1.punta.getDato() && ord) || (aux.getDato() <= P1.punta.getDato() && !ord)) {
+                        P2.Push(aux);
+                        aux = P1.Pop();
+                    } else {
+                        P2.Push(P1.Pop());
+                    }
                 }
-            }
-            if (P1.PilaVacia() && !P2.PilaVacia()) {
-                P1.pasarDato(P2);
-                Push(aux);
-                aux = P1.Pop();
-            }
-            if (P1.PilaVacia() && P2.PilaVacia()) {
-                Push(aux);
+                if (P1.PilaVacia() && !P2.PilaVacia()) {
+                    P1.pasarDato(P2);
+                    Push(aux);
+                    aux = P1.Pop();
+                }
+                if (P1.PilaVacia() && P2.PilaVacia()) {
+                    Push(aux);
+                }
             }
         }
     }
@@ -187,6 +200,7 @@ public class Pila {
         return (uno || dos) && i == 4;
     }
 
+    
     public void Juego() {
         Pila p1 = new Pila();
         Pila p2 = new Pila();
@@ -200,7 +214,7 @@ public class Pila {
         }
 
         boolean ba = false;
-        int op = 80, mov = 0;
+        int op = 2, mov = 0;
         do {
             op = Integer.parseInt(JOptionPane.showInputDialog("***Menu Principal***\n\n"
                     + "1) ¡JUGAR!\n"
@@ -210,13 +224,10 @@ public class Pila {
             switch (op) { // validar si estan vacia la que se va a mover
 
                 case 1:
+                    if(ba==true){
+                        Juego();
+                    }
                     while (!ba) {
-                        // 1. p1 a p2
-                        // 2. p1 a p3
-                        // 3. p2 a p1
-                        // 4. p2 a p3
-                        // 5. p3 a p1
-                        // 6. p3 a p2
                         mov = Integer.parseInt(JOptionPane.showInputDialog("JUEGO\n\n"
                                 + MostrarJuego(p1, p2, p3)
                                 + "P1--P2--P3"
@@ -250,7 +261,7 @@ public class Pila {
                                 break;
                             case 0:
                                 JOptionPane.showMessageDialog(null, "Ha terminado el juego :'/ ");
-                                ;
+                                ba = !ba;
                                 break;
                             default:
                                 JOptionPane.showMessageDialog(null, "Opcion incorrecta");
@@ -274,6 +285,7 @@ public class Pila {
         Pila p1 = this;
         int menu = 0;
         int d = 0;
+        Boolean ord;
         do {
             menu = Integer.parseInt(JOptionPane.showInputDialog("Desea trabajar con: \n"
                     + "1) Apilar\n"
@@ -297,20 +309,40 @@ public class Pila {
                     break;
 
                 case 3:
-                    d = Integer.parseInt(JOptionPane.showInputDialog("Ingrese un numero"));
-                    p1.PushOrdenado(d);
+                int c = Integer.parseInt(JOptionPane.showInputDialog("Ingrese un numero"));
+                if(!p1.PilaVacia()){
+                    d = Integer.parseInt(JOptionPane.showInputDialog("¿De manera?"
+                    + "\n1)Ascendente"
+                    + "\n2)Descendente"));
+                    ord = (d == 1) ? true : false;
+                    p1.Ordenar(ord);
+                    p1.PushOrdenado(c, ord);
+                }
+                else{
+                    p1.PushOrdenado(c, true);
+                }
                     break;
                 case 4:
+                    if(!p1.PilaVacia()){
                     d = Integer.parseInt(JOptionPane.showInputDialog("¿De manera?"
                             + "\n1)Ascendente"
                             + "\n2)Descendente"));
-                    Boolean ord = (d == 1) ? true : false;
+                    ord = (d == 1) ? true : false;
                     p1.Ordenar(ord);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Pila vacia");
+                    }
                     break;
 
                 case 5:
-                    p1.MostrarPila();
-                    break;
+                    if (p1.PilaVacia()){
+                        JOptionPane.showMessageDialog(null, "Pila vacia");
+                    } 
+                    else{
+                        p1.MostrarPila();
+                    }
+                        break;
 
                 case 6:
                     Juego();

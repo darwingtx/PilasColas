@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pilascolas;
 
 /**
- *
  * @author abela
  */
 import javax.swing.JOptionPane;
@@ -84,7 +79,7 @@ public class Cola {
                     aux = Desencolar().getDato();
                     x.Encolar(aux);
 
-                } else if (d < this.punta.getDato() && a) {
+                } else if (d < this.punta.getDato() && a ){
                     x.Encolar(d);
                     a = false;
 
@@ -137,10 +132,11 @@ public class Cola {
         }
     }
 
-    public void menuColas(){
+    public void menuColas() {
         int menu = 0;
         Cola c1 = this;
         int d = 0;
+        Boolean ord =true;
         do {
             menu = Integer.parseInt(JOptionPane.showInputDialog("Desea trabajar con: \n"
                     + "1) Encolar\n"
@@ -150,38 +146,59 @@ public class Cola {
                     + "5) Mostrar\n"
                     + "0) Salir\n\n\n"
                     + "Ingresa una Opcion: "));
-        
+
             switch (menu) {
-            case 1:
-                d = Integer.parseInt(JOptionPane.showInputDialog("Ingrese un numero"));
-                c1.Encolar(d);
-                break;
+                case 1:
+                    d = Integer.parseInt(JOptionPane.showInputDialog("Ingrese un numero"));
+                    c1.Encolar(d);
 
-            case 2:
-                c1.Desencolar();
-                break;
+                    break;
 
-            case 3:
-                d = Integer.parseInt(JOptionPane.showInputDialog("Ingrese un numero"));
-                c1.EncolarOrdenado(d);
-                break;
-            case 4:
-             d = Integer.parseInt(JOptionPane.showInputDialog("¿De manera?"
-             +"\n1)Ascendente"
-             +"\n2)Descendente"));
-             Boolean ord = (d==1)?true:false;
-                c1.Ordenado(ord);
-                break;
+                case 2:
+                    if (!c1.ColaVacia()) {
+                        c1.Desencolar();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Cola vacia");
+                    }
+                    break;
 
-            case 5:
-                c1.MostrarCola();
-                break;
-            default:
-                JOptionPane.showMessageDialog(null, "Opcion incorrecta");
-                break;
+                case 3:
+                    d = Integer.parseInt(JOptionPane.showInputDialog("Ingrese un numero"));
+                    if(!c1.ColaVacia()){
+                    c1.EncolarOrdenado(d);
+                    }
+                    else{
+                        c1.Encolar(d);
+                    }
+                    break;
+                case 4:
+                    if (!c1.ColaVacia()) {
+                        d = Integer.parseInt(JOptionPane.showInputDialog("¿De manera?"
+                                + "\n1)Ascendente"
+                                + "\n2)Descendente"));
+                        ord = (d == 1) ? true : false;
+                        c1.Ordenado(ord);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Cola vacia");
+                    }
 
-        }
-    }while(menu != 0); 
+                    break;
+
+                case 5:
+                    if (c1.ColaVacia()) {
+                        JOptionPane.showMessageDialog(null, "Cola vacia");
+                    } else {
+                        c1.MostrarCola();
+                    }
+
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Opcion incorrecta");
+                    break;
+
+            }
+        } while (menu != 0);
     }
 
 }

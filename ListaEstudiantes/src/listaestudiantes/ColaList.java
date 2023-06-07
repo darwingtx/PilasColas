@@ -1,5 +1,5 @@
 
-package pilascolas;
+package listaestudiantes;
 
 import javax.swing.JOptionPane;
 
@@ -80,7 +80,14 @@ public class ColaList{
        ColaList aux = new ColaList();
        while(p!=null){
         p = this.Desencolar();
-        s = s + "Materia: " + p.getMat() + "\n" + "Nota Final: " + String.format("%.02f",p.getNotas().Promedio()) +  "\n";
+        s = s + "Materia: " + p.getMat() + "\n" + "Nota Final: " + String.format("%.02f",p.getNotas().Promedio())+ "\n";
+        if(p.getNotas().Promedio()>=3){
+            s=s+ "Gano la Materia\n" ;
+         }
+        else{
+             s=s+"Perdio la materia\n";
+        
+        }
         aux.Encolar(p);
         p = punta;
        }
@@ -88,5 +95,6 @@ public class ColaList{
        s = s + "------------------------------------\n";
        return s;
     }
-    }
+
+}
 

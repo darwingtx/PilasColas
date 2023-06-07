@@ -1,5 +1,5 @@
 
-package pilascolas;
+package listaestudiantes;
 /**
  *
  * @author Darwin Castaño
@@ -54,7 +54,7 @@ public class PilaNotas {
             prom = x + prom;
         }
         this.PasarDato(aux);
-        prom = prom / (Tope + 1);
+        prom = prom / 4;
         return prom;
     }
 
