@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 public class ColaList{
     //Atributos
 
-    private NodoCola punta;
+    public NodoCola punta;
     private int tope;
 
     //Constructor
@@ -21,7 +21,7 @@ public class ColaList{
     }
 
     //devolver verdadero si esta vacio
-    private boolean ColaVacia() {
+    public boolean ColaVacia() {
         return punta == null ? true : false;
     }
 
@@ -59,6 +59,14 @@ public class ColaList{
     }
 
     
+    public void Buscar(NodoCola p, String mat){
+        if(p.getMat().equals(mat)){
+
+        }
+        else{
+            this.Buscar(p.getLiga(), mat);
+        }
+    }
 
     public NodoCola Desencolar() {
         NodoCola p = punta;

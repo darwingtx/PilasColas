@@ -17,6 +17,85 @@ public class ListaEst {
         this.numE = 0;
     }
 
+
+
+    public void Reemplazar(int a, NodoList p) {
+        switch(a){
+            case 1:
+                p.setNomb(JOptionPane.showInputDialog(null,"Nuevo Nombre: "));
+                break;
+            
+            case 2:
+                p.setCedula(JOptionPane.showInputDialog(null,"Nueva cedula: "));
+                break;
+            case 3:
+                p.setCarrera(JOptionPane.showInputDialog(null,"Nueva Carrera: "));
+                break;
+            
+            case 4:
+                p.setApell(JOptionPane.showInputDialog(null,"Nuevo Apellido: "));
+                break;
+            case 5:
+            
+                String d = JOptionPane.showInputDialog(null,"¿Que materia?\n");
+                p.getMaterias().Buscar(p.getMaterias().punta, d);
+                break;
+            
+            case 6:
+                p.setCedula(JOptionPane.showInputDialog(null,"Nueva cedula: "));
+                p.setNomb(JOptionPane.showInputDialog(null,"Nuevo Nombre: "));
+                p.setCarrera(JOptionPane.showInputDialog(null,"Nueva Carrera: "));
+                p.setApell(JOptionPane.showInputDialog(null,"Nuevo Apellido: "));
+
+                ColaList c1 = new ColaList();
+                while(!p.getMaterias().ColaVacia()){
+
+
+                }
+
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "Opcion erronea");
+                a = Integer.parseInt(JOptionPane.showInputDialog(null,"¿Que desea remplazar?\n" +
+                "1)Nombre\n"
+                +"2)Cedula\n"
+                +"3)Carrera\n"
+                +"4)Apellido\n"
+                +"5)Materia\n"
+                +"6)Todo\n"));
+                Reemplazar(a, p);
+                break;
+
+        }
+    }
+
+    public void Buscar(NodoList p, String Cedula) {
+        
+        if(p == null){
+            JOptionPane.showMessageDialog(null, "No esta el estudiante");
+        }
+        else if(p.getCedula().equals(Cedula)){
+            int a = Integer.parseInt(JOptionPane.showInputDialog(null,"1)Mostar\n"+ "2)Reemplazar"));
+            if(a==1){
+                this.MostrarNodo(p);
+            }
+            else{
+                a = Integer.parseInt(JOptionPane.showInputDialog(null,"¿Que desea remplazar?\n" +
+                "1)Nombre\n"
+                +"2)Cedula\n"
+                +"3)Carrera\n"
+                +"4)Apellido\n"
+                +"5)Materia\n"
+                +"6)Todo\n"));
+
+                Reemplazar(a, p);
+            }
+        }
+        else{
+            Buscar(p.getLiga(), Cedula);
+            }
+    }
+
     public void menuList(){
         ListaEst estudiantes = this;
         int op = 0;
@@ -26,6 +105,7 @@ public class ListaEst {
             + "1) Registrar Estudiante y materias\n"
             + "2) Mostrar Lista Estudiante\n"
             + "3) Numero de estudiantes\n"
+            +"4)Buscar\n"
             + "0) Salir"));
 
             switch (op) {
@@ -40,7 +120,15 @@ public class ListaEst {
                 case 3:
                     JOptionPane.showMessageDialog(null, "Hay " + estudiantes.getNumE()+ " estudiantes registrados");
                     break;
-
+                case 4:
+                    if(!estudiantes.Vacio()){
+                        String ced = JOptionPane.showInputDialog(null,"cedula");
+                        estudiantes.Buscar(punta, ced);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Lista vacia");
+                    }
+                    break;
                 case 0:
                 JOptionPane.showMessageDialog(null, "Adios!!!");
                     break;
@@ -97,6 +185,19 @@ public class ListaEst {
             JOptionPane.showMessageDialog(null, "Lista vacia");
         }
 
+    }
+    public void MostrarNodo(NodoList x) {
+        if (!this.Vacio()) {
+            String s = "";
+            NodoList p = x;
+                s = s + "Cedula: " + p.getCedula() + "\n" + "Estudiante: " + p.getNomb() 
+                + " " + p.getApell() 
+                + "\n"
+                + "Carrera: " + p.getCarrera() + "\n\n" 
+                + p.getMaterias().MostrarCola();
+            JOptionPane.showMessageDialog(null, s);
+        
+        }
     }
 
     public boolean Vacio() {
